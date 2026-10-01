@@ -11,3 +11,9 @@
 ## 1.3. Специфікація функціональних та нефункціональних вимог (SRS)
 - Функціональні вимоги до модуля диспетчеризації та балансування завантаженості.
 - Нефункціональні вимоги згідно з ДСТУ: Latency, Fault Tolerance, сумісність за протоколами REST API.
+
+### Summary of changes
+- Added deep architectural competitive analysis for 3 systems: Medesk, OpenEMR, Helsi.
+- Constructed engineering comparison matrix (Table 1.1) evaluating Architecture, Protocols, DBMS, Client State, Scheduling, and Fault Tolerance.
+- Formulated analytical trade-off summary justifying the chosen Next.js / Django / Firebase stack.
+- Refactored text using stylistic AI-linter compliant with DSTU 3008:2015.
