@@ -1,0 +1,23 @@
+name: Docs Quality Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - '.markdownlint.json'
+
+jobs:
+  lint-docs:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Markdownlint
+        uses: DavidAnson/markdownlint-action@v0.43.0
+        with:
+          config: '.markdownlint.json'
+          globs: 'docs/**/*.md'
