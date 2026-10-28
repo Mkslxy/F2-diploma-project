@@ -1,0 +1,252 @@
+openapi: 3.0.3
+info:
+  title: Medical Center Distributed Healthcare API
+  description: Промисловий міжсервісний контракт управління розкладом, Hold-слотами та прийомами спеціалістів згідно з вимогами SRS-FUN-01..08.
+  version: 1.0.0
+servers:
+  - url: https://api.medcenter.local/api/v1
+    description: Production Gateway Server
+
+paths:
+  /schedule/slots:
+    get:
+      summary: Отримання списку доступних часових слотів спеціалістів
+      description: Повертає список слотів із кешу або БД з фільтрацією за лікарем та діапазоном дат.
+      operationId: getScheduleSlots
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: doctor_id
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Успішне отримання слотів
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleSlot'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'
+        '500':
+          $ref: '#/components/responses/500InternalError'
+
+  /schedule/slots/{id}/hold:
+    post:
+      summary: Тимчасове резервування слота (Hold Slot Pattern)
+      description: Атомарно блокує слот у Redis на 420 секунд (TTL) для запобігання колізіям паралельного бронювання.
+      operationId: holdScheduleSlot
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - patient_id
+              properties:
+                patient_id:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: Слот успішно зарезервовано
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slot_id:
+                    type: string
+                    format: uuid
+                  hold_expires_at:
+                    type: string
+                    format: date-time
+                  ttl_seconds:
+                    type: integer
+                    example: 420
+        '409':
+          description: Конфлікт — слот уже заблоковано іншим користувачем
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+
+  /appointments:
+    post:
+      summary: Фінальне транзакційне створення запису на прийом
+      description: Фіксує візит у PostgreSQL з песимістичним блокуванням SELECT FOR UPDATE та видаляє Hold-ключ у Redis.
+      operationId: createAppointment
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - slot_id
+                - patient_id
+                - visit_reason
+              properties:
+                slot_id:
+                  type: string
+                  format: uuid
+                patient_id:
+                  type: string
+                  format: uuid
+                visit_reason:
+                  type: string
+                  minLength: 5
+                  maxLength: 500
+      responses:
+        '201':
+          description: Прийом успішно створено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '409':
+          description: Часовий слот недоступний або термін утримання закінчився
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ScheduleSlot:
+      type: object
+      required:
+        - id
+        - doctor_id
+        - start_time
+        - end_time
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        doctor_id:
+          type: string
+          format: uuid
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [FREE, ON_HOLD, BOOKED, CANCELLED]
+
+    Appointment:
+      type: object
+      required:
+        - id
+        - slot_id
+        - patient_id
+        - doctor_id
+        - status
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        slot_id:
+          type: string
+          format: uuid
+        patient_id:
+          type: string
+          format: uuid
+        doctor_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED]
+        visit_reason:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+        message:
+          type: string
+
+  responses:
+    400BadRequest:
+      description: Помилка валідації вхідних DTO
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    401Unauthorized:
+      description: Недійсний або відсутній JWT токен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    429TooManyRequests:
+      description: Перевищено ліміт запитів (Rate Limiting 100 req/min)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    500InternalError:
+      description: Внутрішня помилка сервера
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
