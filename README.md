@@ -19,8 +19,11 @@
 | **Специфікація вимог (SRS)** | Контракт вимог за стандартом ISO/IEC/IEEE 29148 | [`docs/srs.md`](./docs/srs.md) | `Done` |
 | **Архітектурні рішення (ADR)** | Реєстр рішень (ADR-001: Redis Hold Slot + PostgreSQL SELECT FOR UPDATE) | [`docs/adr/0001-choice-of-technology.md`](./docs/adr/0001-choice-of-technology.md) | `Done` |
 | **Специфікація API (OpenAPI 3.0)** | Повний контракт міжсервісної взаємодії REST API | [`docs/api/openapi.yaml`](./docs/api/openapi.yaml) | `Done` |
-| **Проєктування архітектури, баз даних та алгоритмів (Розділ 2)** | C4 Model (Levels 1–3), ERD (3NF), алгоритми критичних вузлів, аудит цілісності | [`docs/2_design.md`](./docs/2_design.md) | `Done` |
-| **PKM Workspace (Notion)** | Робоча база знань та журнали AI Insights (AI Disclosure) | [Notion PKM](https://app.notion.com/p/3dedff09ecc68016a39dc7f487367050) | `Done` |
+| **Діаграма прецедентів (UML 2.5)** | Модель Use Cases (StarUML `.mdj` + експорт `.png`) | [`docs/diagrams/use_case_diagram.png`](./docs/diagrams/use_case_diagram.png) | `Done` |
+| **Розділ 2 (Консолідоване проєктування)** | Архітектурний стиль, C4 L1–3, AppSec, API Topology, Use Cases, ERD, Алгоритми, Production Readiness | [`docs/2_design.md`](./docs/2_design.md) | `Done` |
+| **Зведений моноліт Розділів 1 та 2** | Консолідований документ пояснювальної записки (`.docx`) | [`docs/F2_Diploma_Chapter1_2_Petykhachnyi.docx`](./docs/F2_Diploma_Chapter1_2_Petykhachnyi.docx) | `Done` |
+| **Docs Quality Gate (CI/CD)** | Автоматичний контроль якості документації (`markdownlint-cli2`) | [`.github/workflows/docs-linter.yml`](./.github/workflows/docs-linter.yml) | `Active` |
+| **PKM Workspace (Notion)** | Робоча база знань та повні протоколи AI Insights (AI Disclosure) | [Notion PKM](https://app.notion.com/p/3dedff09ecc68016a39dc7f487367050) | `Done` |
 | **Розділ 3 (Реалізація)** | Архітектура коду, тестування k6, DevSecOps | [`docs/3_implementation.md`](./docs/3_implementation.md) | `Planned` |
 | **Висновки** | Загальні результати кваліфікаційної роботи | [`docs/4_conclusions.md`](./docs/4_conclusions.md) | `Planned` |
 
