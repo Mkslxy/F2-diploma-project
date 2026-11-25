@@ -1,0 +1,28 @@
+name: Docs Quality Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - '.markdownlint.json'
+      - '.github/workflows/docs-linter.yml'
+  workflow_dispatch:
+
+jobs:
+  lint-docs:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v25.1.0
+        with:
+          config: '.markdownlint.json'
+          globs: |-
+            docs/**/*.md
+            README.md

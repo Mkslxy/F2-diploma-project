@@ -1,0 +1,181 @@
+{
+  "_type": "Project",
+  "_id": "fc123709-1b92-4693-917a-f176b7821967",
+  "name": "MedCenter_UseCases",
+  "ownedElements": [
+    {
+      "_type": "UMLModel",
+      "_id": "38a22e09-2da4-4a9b-917f-d15585c6a68e",
+      "_parent": {
+        "$ref": "fc123709-1b92-4693-917a-f176b7821967"
+      },
+      "name": "UseCase Model",
+      "ownedElements": [
+        {
+          "_type": "UMLUseCaseDiagram",
+          "_id": "f0b0d261-66f6-440a-b858-7a09019b1bb1",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "MedCenter Use Case Diagram"
+        },
+        {
+          "_type": "UMLUseCaseSubject",
+          "_id": "260a83df-4619-491e-a529-0cd6ced5c976",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "Медична інформаційна система «MedCenter»",
+          "ownedElements": [
+            {
+              "_type": "UMLUseCase",
+              "_id": "8a712776-916e-4666-b64f-5dc75880c028",
+              "_parent": {
+                "$ref": "260a83df-4619-491e-a529-0cd6ced5c976"
+              },
+              "name": "UC-01: Переглянути розклад та доступні слоти"
+            },
+            {
+              "_type": "UMLUseCase",
+              "_id": "6f9e16eb-a3e1-4d70-ad5d-c4454012a476",
+              "_parent": {
+                "$ref": "260a83df-4619-491e-a529-0cd6ced5c976"
+              },
+              "name": "UC-02: Зарезервувати слот тимчасово (Soft Lock, 420 с)"
+            },
+            {
+              "_type": "UMLUseCase",
+              "_id": "1a79538e-4555-4799-9681-3b7c8c434c2d",
+              "_parent": {
+                "$ref": "260a83df-4619-491e-a529-0cd6ced5c976"
+              },
+              "name": "UC-03: Підтвердити бронювання візиту (Hard Lock)"
+            },
+            {
+              "_type": "UMLUseCase",
+              "_id": "ffbb524b-224f-497f-a653-3abceb5ccc19",
+              "_parent": {
+                "$ref": "260a83df-4619-491e-a529-0cd6ced5c976"
+              },
+              "name": "UC-04: Змінити статус прийому за скінченним автоматом (FSM)"
+            },
+            {
+              "_type": "UMLUseCase",
+              "_id": "c69aa91e-84bb-4dd9-96d7-e5e85b787bf5",
+              "_parent": {
+                "$ref": "260a83df-4619-491e-a529-0cd6ced5c976"
+              },
+              "name": "UC-05: Сформувати аналітику завантаженості спеціалістів"
+            },
+            {
+              "_type": "UMLUseCase",
+              "_id": "09a0aefe-8c50-4b1d-baa8-aee79c75cc55",
+              "_parent": {
+                "$ref": "260a83df-4619-491e-a529-0cd6ced5c976"
+              },
+              "name": "UC-06: Автентифікуватись та перевірити права доступу (RBAC)"
+            },
+            {
+              "_type": "UMLUseCase",
+              "_id": "36eb71cc-6171-4d0d-8302-7c3b71456159",
+              "_parent": {
+                "$ref": "260a83df-4619-491e-a529-0cd6ced5c976"
+              },
+              "name": "UC-07: Виконати відкат транзакції при збої (Rollback)"
+            }
+          ]
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "1186e5c6-c06a-4063-9783-06d94bf6afd0",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "Користувач системи (Abstract)",
+          "isAbstract": true
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "9451796b-3110-470a-b3dc-2b4ae94e3ae2",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "Пацієнт",
+          "isAbstract": false
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "376a162a-afc4-4e25-9429-c35157039d69",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "Адміністратор реєстратури",
+          "isAbstract": false
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "f0d3f457-0dc0-485a-a8c1-3919256f1082",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "Лікар",
+          "isAbstract": false
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "aa8d3972-90f5-4bec-9fa3-01970243ee9f",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "Керівник клініки",
+          "isAbstract": false
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "dcd9751e-62f5-4900-864d-800f9cb67a31",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "Redis 7.2 «system»",
+          "isAbstract": false
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "b65de3c4-6bca-4c95-b555-d44949910a28",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "Payment Gateway (LiqPay) «system»",
+          "isAbstract": false
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "a60b2794-0975-4765-89d6-cd18c56350f0",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "PostgreSQL 16 (PgBouncer) «system»",
+          "isAbstract": false
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "e285ae70-b739-4eaf-93ed-ece95fd10f2d",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "SMS / Email Gateway «system»",
+          "isAbstract": false
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "5ece18d9-1cfb-4adf-b52d-199148f78ad9",
+          "_parent": {
+            "$ref": "38a22e09-2da4-4a9b-917f-d15585c6a68e"
+          },
+          "name": "Celery & eHealth Bus «system»",
+          "isAbstract": false
+        }
+      ]
+    }
+  ]
+}
